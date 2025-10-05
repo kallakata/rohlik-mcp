@@ -102,15 +102,33 @@ export function createOrderAnalyticsTool(createRohlikAPI: () => RohlikAPI) {
         // Filter orders within the date range
         const filteredOrders = orders.filter((order: OrderData) => {
           const orderDate = new Date(order.deliveredAt || order.createdAt || '');
-          return orderDate >= fromDate && orderDate <= toDate;
-        });
-
+          return !isNaN(orderDate.getTime()) && orderDate >= fromDate && orderDate <= toDate;
+        });        // If no orders in date range, still try to get details for all recent orders to show something useful
         if (filteredOrders.length === 0) {
+          // Use the most recent orders regardless of date
+          const recentOrders = orders.slice(0, Math.min(5, orders.length));
+          
+          let debugOutput = `No orders found in the last ${months} months.\n\n`;
+          debugOutput += `📋 SHOWING MOST RECENT ${recentOrders.length} ORDERS INSTEAD:\n\n`;
+          
+          for (let i = 0; i < recentOrders.length; i++) {
+            const order = recentOrders[i];
+            const orderDate = order.deliveredAt || order.createdAt || 'Unknown date';
+            const totalPrice = order.totalPrice || order.price || 'Unknown price';
+            const orderNumber = order.orderNumber || order.id || `Order ${i + 1}`;
+            
+            debugOutput += `${i + 1}. ${orderNumber}\n`;
+            debugOutput += `   Date: ${orderDate}\n`;
+            debugOutput += `   Total: ${totalPrice} CZK\n\n`;
+          }
+          
+          debugOutput += `💡 TIP: Your most recent orders seem to be older than ${months} months. Try increasing the months parameter (e.g., 6 or 12 months).`;
+          
           return {
             content: [
               {
                 type: "text" as const,
-                text: `No orders found in the last ${months} months.`
+                text: debugOutput
               }
             ]
           };
@@ -125,10 +143,13 @@ export function createOrderAnalyticsTool(createRohlikAPI: () => RohlikAPI) {
               const detail = await api.getOrderDetail(orderId);
               if (detail) {
                 detailedOrders.push(detail);
+              } else {
+                detailedOrders.push(order);
               }
+            } else {
+              detailedOrders.push(order);
             }
           } catch (error) {
-            console.error(`Failed to fetch details for order ${order.id}:`, error);
             // Include the order even without detailed products
             detailedOrders.push(order);
           }
