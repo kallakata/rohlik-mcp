@@ -349,6 +349,17 @@ export class RohlikAPI {
     }
   }
 
+  async getPaymentMethods(): Promise<any> {
+    await this.login();
+
+    try {
+      const response = await this.makeRequest<any>('/services/frontend-service/payment-methods');
+      return response.data || response;
+    } finally {
+      await this.logout();
+    }
+  }
+
   async getAnnouncements(): Promise<any> {
     await this.login();
 
