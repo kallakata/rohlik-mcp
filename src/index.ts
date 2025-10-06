@@ -16,6 +16,7 @@ import { createAnnouncementsTool } from "./tools/announcements.js";
 import { createReusableBagsTool } from "./tools/reusable-bags.js";
 import { createOrderDetailTool } from "./tools/order-detail.js";
 import { createOrderAnalyticsTool } from "./tools/order-analytics.js";
+import { getPaymentMethods } from "./tools/payment-methods.js";
 
 const server = new McpServer(
   {
@@ -82,6 +83,7 @@ server.registerTool(deliverySlots.name, deliverySlots.definition, deliverySlots.
 server.registerTool(premiumInfo.name, premiumInfo.definition, premiumInfo.handler);
 server.registerTool(announcements.name, announcements.definition, announcements.handler);
 server.registerTool(reusableBags.name, reusableBags.definition, reusableBags.handler);
+server.registerTool(getPaymentMethods.name, getPaymentMethods.definition, getPaymentMethods.handler);
 
 async function main() {
   const transport = new StdioServerTransport();
