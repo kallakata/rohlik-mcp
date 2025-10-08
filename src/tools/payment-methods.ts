@@ -1,6 +1,6 @@
 import { z } from "zod";
 import { RohlikAPI } from "../rohlik-api.js";
-import { PayMentdata } from "../types.js";
+import { Paymentdata } from "../types.js";
 
 export function getPaymentMethods(createRohlikAPI: () => RohlikAPI) {
   return {
@@ -31,10 +31,10 @@ export function getPaymentMethods(createRohlikAPI: () => RohlikAPI) {
         }
 
         const filteredMethods = methods.length > 0
-          ? paymentMethods.filter((method: PayMentdata) => methods.includes(method.id))
+          ? paymentMethods.filter((method: Paymentdata) => methods.includes(method.id))
           : paymentMethods;
 
-        const output = `💳 PAYMENT METHODS (${filteredMethods.length} available):\n\n${filteredMethods.map((method: PayMentdata) => `${method.name} (${method.id})`).join('\n')}`;
+        const output = `💳 PAYMENT METHODS (${filteredMethods.length} available):\n\n${filteredMethods.map((method: Paymentdata) => `${method.name} (${method.id})`).join('\n')}`;
 
         return {
           content: [

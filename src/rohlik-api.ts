@@ -233,7 +233,7 @@ export class RohlikAPI {
         premium_profile: '/services/frontend-service/premium/profile',
         delivery_announcements: '/services/frontend-service/announcements/delivery',
         delivered_orders: '/api/v3/orders/delivered?offset=0&limit=50',
-        payment_methods: '/services/frontend-service/payment-methods'
+        payment_methods: 'services/frontend-service/v2/user-profile/payment-cards'
       };
 
       // Fetch data from all endpoints
@@ -354,7 +354,7 @@ export class RohlikAPI {
     await this.login();
 
     try {
-      const response = await this.makeRequest<any>('/services/frontend-service/payment-methods');
+      const response = await this.makeRequest<any>('/services/frontend-service/v2/user-profile/payment-cards');
       return response.data || response;
     } finally {
       await this.logout();
