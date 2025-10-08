@@ -232,7 +232,8 @@ export class RohlikAPI {
         last_order: '/api/v3/orders/delivered?offset=0&limit=1',
         premium_profile: '/services/frontend-service/premium/profile',
         delivery_announcements: '/services/frontend-service/announcements/delivery',
-        delivered_orders: '/api/v3/orders/delivered?offset=0&limit=50'
+        delivered_orders: '/api/v3/orders/delivered?offset=0&limit=50',
+        payment_methods: '/services/frontend-service/payment-methods'
       };
 
       // Fetch data from all endpoints
