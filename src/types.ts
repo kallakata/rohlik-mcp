@@ -85,7 +85,7 @@ export interface AccountData {
   cart?: CartContent;
 }
 
-export interface PayMentdata {
+export interface Paymentdata {
   id: string;
   name: string;
   description: string;
