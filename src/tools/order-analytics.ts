@@ -136,30 +136,54 @@ export function createOrderAnalyticsTool(createRohlikAPI: () => RohlikAPI) {
 
         // Fetch detailed information for each order
         const detailedOrders: OrderData[] = [];
+        let successCount = 0;
+        let failCount = 0;
+        
         for (const order of filteredOrders) {
           try {
-            const orderId = order.id || order.orderNumber;
+            // Try multiple possible ID fields
+            const orderId = order.orderNumber || order.id;
+            
             if (orderId) {
-              const detail = await api.getOrderDetail(orderId);
-              if (detail) {
+              console.log(`Fetching details for order ${orderId}...`);
+              const detail = await api.getOrderDetail(String(orderId));
+              
+              if (detail && (detail.products || detail.items)) {
                 detailedOrders.push(detail);
+                successCount++;
+                console.log(`✓ Successfully fetched order ${orderId} with ${(detail.products || detail.items)?.length || 0} products`);
               } else {
+                // Fallback to original order data
                 detailedOrders.push(order);
+                failCount++;
+                console.log(`⚠ Order ${orderId} fetched but no products found, using summary data`);
               }
             } else {
               detailedOrders.push(order);
+              failCount++;
+              console.log(`⚠ Order has no ID field, using summary data:`, JSON.stringify(order).substring(0, 200));
             }
           } catch (error) {
             // Include the order even without detailed products
             detailedOrders.push(order);
+            failCount++;
+            console.log(`✗ Failed to fetch order details:`, error instanceof Error ? error.message : String(error));
           }
         }
+        
+        console.log(`\nOrder detail fetch summary: ${successCount} successful, ${failCount} failed out of ${filteredOrders.length} total`);
 
         // Calculate analytics
         const analytics = calculateOrderAnalytics(detailedOrders, fromDate, toDate, topCount);
         
         // Format the output
-        const output = formatAnalyticsOutput(analytics, months);
+        let output = formatAnalyticsOutput(analytics, months);
+        
+        // Add debug info if some orders failed
+        if (failCount > 0) {
+          output += `\n\n⚠️  NOTE: ${failCount} out of ${filteredOrders.length} orders could not be fetched with full product details.`;
+          output += `\n   Analytics may be incomplete. Check console logs for details.`;
+        }
 
         return {
           content: [
