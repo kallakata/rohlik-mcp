@@ -84,3 +84,12 @@ export interface AccountData {
   delivered_orders?: any;
   cart?: CartContent;
 }
+
+export interface Paymentdata {
+  id: string;
+  name: string;
+  description: string;
+  image: string;
+  type: string;
+  active: boolean;
+}

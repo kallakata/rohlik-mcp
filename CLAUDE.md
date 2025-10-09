@@ -28,9 +28,9 @@ src/
 - `ROHLIK_PASSWORD` - User password (required)
 - `ROHLIK_BASE_URL` - Service URL (optional, defaults to rohlik.cz)
 
-## Available Tools (13 total)
+## Available Tools (15 total)
 **Core Shopping:** search_products, add_to_cart, get_cart_content, remove_from_cart, get_shopping_list
-**Account Info:** get_account_data, get_order_history, get_upcoming_orders, get_delivery_info, get_delivery_slots, get_premium_info, get_announcements, get_reusable_bags_info
+**Account Info:** get_account_data, get_order_history, get_upcoming_orders, get_delivery_info, get_delivery_slots, get_premium_info, get_announcements, get_reusable_bags_info, order_analytics
 
 ## Key Implementation Details
 - Each tool is in separate file for modularity

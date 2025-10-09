@@ -3,12 +3,16 @@ import { createSearchProductsTool } from "./search-products.js";
 import { createCartManagementTools } from "./cart-management.js";
 import { createShoppingListsTool } from "./shopping-lists.js";
 import { createAccountDataTool } from "./account-data.js";
+import { createOrderAnalyticsTool } from "./order-analytics.js";
+import { createListOrderIdsTool } from "./list-order-ids.js";
 
 export function createAllTools(createRohlikAPI: () => RohlikAPI) {
   const searchProducts = createSearchProductsTool(createRohlikAPI);
   const cartTools = createCartManagementTools(createRohlikAPI);
   const shoppingLists = createShoppingListsTool(createRohlikAPI);
   const accountData = createAccountDataTool(createRohlikAPI);
+  const orderAnalytics = createOrderAnalyticsTool(createRohlikAPI);
+  const listOrderIds = createListOrderIdsTool(createRohlikAPI);
 
   return {
     [searchProducts.name]: searchProducts,
@@ -17,5 +21,7 @@ export function createAllTools(createRohlikAPI: () => RohlikAPI) {
     [cartTools.removeFromCart.name]: cartTools.removeFromCart,
     [shoppingLists.name]: shoppingLists,
     [accountData.name]: accountData,
+    [orderAnalytics.name]: orderAnalytics,
+    [listOrderIds.name]: listOrderIds,
   };
 }

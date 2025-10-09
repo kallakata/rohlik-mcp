@@ -41,12 +41,13 @@ export function createOrderDetailTool(createRohlikAPI: () => RohlikAPI) {
         };
 
         const order = orderDetail;
+        
         const orderNumber = order.orderNumber || order.id || orderId;
-        const orderDate = order.deliveredAt || order.createdAt || 'Unknown date';
-        const totalPrice = order.totalPrice || order.price || 'Unknown price';
-        const status = order.status || 'Unknown status';
-        const deliveryDate = order.deliveryDate || order.deliveredAt || 'Unknown delivery date';
-        const products = order.products || order.items || [];
+        const orderDate = order.deliveredAt || order.createdAt || order.deliveryDate || order.date || 'Unknown date';
+        const totalPrice = order.totalPrice || order.price || order.total || order.amount || 'Unknown price';
+        const status = order.status || order.state || 'Unknown status';
+        const deliveryDate = order.deliveryDate || order.deliveredAt || order.deliveryTime || 'Unknown delivery date';
+        const products = order.products || order.items || order.orderItems || [];
 
         const output = `📦 ORDER DETAILS - ${orderNumber}
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━
