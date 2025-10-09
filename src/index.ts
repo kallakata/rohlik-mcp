@@ -17,6 +17,7 @@ import { createReusableBagsTool } from "./tools/reusable-bags.js";
 import { createOrderDetailTool } from "./tools/order-detail.js";
 import { createOrderAnalyticsTool } from "./tools/order-analytics.js";
 import { getPaymentMethods } from "./tools/payment-methods.js";
+import { createListOrderIdsTool } from "./tools/list-order-ids.js";
 
 const server = new McpServer(
   {
@@ -60,6 +61,8 @@ const announcements = createAnnouncementsTool(createRohlikAPI);
 const reusableBags = createReusableBagsTool(createRohlikAPI);
 const orderDetail = createOrderDetailTool(createRohlikAPI);
 const orderAnalytics = createOrderAnalyticsTool(createRohlikAPI);
+const getPayment = getPaymentMethods(createRohlikAPI);
+const listOrderIds = createListOrderIdsTool(createRohlikAPI);
 
 // Core functionality
 server.registerTool(searchProducts.name, searchProducts.definition, searchProducts.handler);
@@ -73,6 +76,7 @@ server.registerTool(accountData.name, accountData.definition, accountData.handle
 server.registerTool(orderHistory.name, orderHistory.definition, orderHistory.handler);
 server.registerTool(orderDetail.name, orderDetail.definition, orderDetail.handler);
 server.registerTool(orderAnalytics.name, orderAnalytics.definition, orderAnalytics.handler);
+server.registerTool(listOrderIds.name, listOrderIds.definition, listOrderIds.handler);
 server.registerTool(upcomingOrders.name, upcomingOrders.definition, upcomingOrders.handler);
 
 // Delivery management
@@ -83,7 +87,7 @@ server.registerTool(deliverySlots.name, deliverySlots.definition, deliverySlots.
 server.registerTool(premiumInfo.name, premiumInfo.definition, premiumInfo.handler);
 server.registerTool(announcements.name, announcements.definition, announcements.handler);
 server.registerTool(reusableBags.name, reusableBags.definition, reusableBags.handler);
-server.registerTool(getPaymentMethods.name, getPaymentMethods.definition, getPaymentMethods.handler);
+server.registerTool(getPayment.name, getPayment.definition, getPayment.handler);
 
 async function main() {
   const transport = new StdioServerTransport();
